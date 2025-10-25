@@ -33,7 +33,7 @@ final class TrackersViewController: UIViewController {
         searchBar.placeholder = "Поиск"
         searchBar.searchBarStyle = .minimal
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.backgroundColor = UIColor(red: 0.46, green: 0.46, blue: 0.50, alpha: 0.12)
+
         searchBar.layer.cornerRadius = 8
         searchBar.clipsToBounds = true
         searchBar.delegate = self
@@ -117,21 +117,25 @@ final class TrackersViewController: UIViewController {
     private func setupNavigationBar() {
         let addButton = UIBarButtonItem(
             image: UIImage(named: "plus"),
-            primaryAction: UIAction { [weak self] _ in
-                self?.addTrackerTapped()
-            }
+            style: .plain,
+            target: self,
+            action: #selector(addTrackerTapped)
         )
         addButton.tintColor = .black
+        addButton.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         let datePickerItem = UIBarButtonItem(customView: datePicker)
         
         navigationItem.leftBarButtonItem = addButton
         navigationItem.rightBarButtonItem = datePickerItem
+        
+        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets.zero
+        navigationItem.leftBarButtonItem?.setBackgroundVerticalPositionAdjustment(0, for: .default)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            trackersLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            trackersLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             trackersLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -152,9 +156,10 @@ final class TrackersViewController: UIViewController {
         ])
     }
     
-    private func addTrackerTapped() {
-        print("Добавить трекер")
-        // Логика перехода на экран создания трекера
+    @objc private func addTrackerTapped() {
+        let createHabitVC = CreateHabitScreen()
+            createHabitVC.delegate = self
+            present(createHabitVC, animated: true)
     }
     
     private func datePickerValueChanged() {
@@ -353,5 +358,20 @@ extension TrackersViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+extension TrackersViewController: CreateTrackerViewControllerDelegate {
+    func didCreateTracker(_ tracker: Tracker, categoryTitle: String) {
+        // Добавляем трекер в соответствующую категорию
+        if let index = categories.firstIndex(where: { $0.title == categoryTitle }) {
+            categories[index].trackers.append(tracker)
+        } else {
+            // Или создаем новую категорию
+            let newCategory = TrackerCategory(title: categoryTitle, trackers: [tracker])
+            categories.append(newCategory)
+        }
+        
+        reloadData()
+        dismiss(animated: true)
     }
 }
