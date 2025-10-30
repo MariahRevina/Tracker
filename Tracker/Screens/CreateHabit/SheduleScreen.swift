@@ -1,6 +1,6 @@
 import UIKit
 
-class SheduleScreen: UIViewController {
+final class SheduleScreen: UIViewController {
     
     // MARK: - Properties
     
@@ -9,7 +9,7 @@ class SheduleScreen: UIViewController {
     
     // MARK: - UI Elements
     
-    private let weekdayTableView: UITableView = {
+    private lazy var weekdayTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "weekdayCell")
         tableView.layer.cornerRadius = 16

@@ -10,7 +10,7 @@ final class CreateHabitScreen: UIViewController {
     
     // MARK: - UI Elements
     
-    private let nameScreen: UILabel = {
+    private lazy var nameScreen: UILabel = {
         let label = UILabel()
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -19,7 +19,7 @@ final class CreateHabitScreen: UIViewController {
         return label
     }()
     
-    private let textField: UITextField = {
+    private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "  Введите название трекера"
         textField.layer.cornerRadius = 16
@@ -33,7 +33,7 @@ final class CreateHabitScreen: UIViewController {
         return textField
     }()
     
-    private var clearTextButton: UIButton = {
+    private lazy var clearTextButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         button.tintColor = .yGray
@@ -42,7 +42,7 @@ final class CreateHabitScreen: UIViewController {
         return button
     } ()
     
-    private let errorLabel: UILabel = {
+    private lazy var errorLabel: UILabel = {
         let label = UILabel()
         label.text = "Ограничение 38 символов"
         label.font = UIFont.systemFont(ofSize: 17)
@@ -53,7 +53,7 @@ final class CreateHabitScreen: UIViewController {
         return label
     } ()
     
-    private let optionsTableView: UITableView = {
+    private lazy var optionsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.layer.cornerRadius = 16

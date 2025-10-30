@@ -3,10 +3,12 @@ import UIKit
 class CategoryScreen: UIViewController {
 
     weak var delegate: CategorySelectionDelegate?
-    
-    private let tableView: UITableView = {
+    private enum Constants {
+            static let categoryCellIdentifier = "CategoryCell"
+        }
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CategoryCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.categoryCellIdentifier)
         tableView.layer.cornerRadius = 16
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -51,7 +53,7 @@ extension CategoryScreen: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.categoryCellIdentifier, for: indexPath)
         cell.textLabel?.text = categories[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
         cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)

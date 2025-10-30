@@ -59,7 +59,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var placeholderImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "star")
+        imageView.image = UIImage(resource: .star)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -120,7 +120,7 @@ final class TrackersViewController: UIViewController {
     
     private func setupNavigationBar() {
         let addButton = UIBarButtonItem(
-            image: UIImage(named: "plus"),
+            image: UIImage(resource: .plus),
             style: .plain,
             target: self,
             action: #selector(addTrackerTapped)
@@ -175,20 +175,15 @@ final class TrackersViewController: UIViewController {
         let selectedDate = datePicker.date
         let filterWeekday = calendar.component(.weekday, from: selectedDate)
         
-        print("🔍 Фильтрация по дню недели: \(filterWeekday)")
-           print("📊 Всего категорий: \(categories.count)")
-        
         visibleCategories = categories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 tracker.shedule.contains { weekday in
                     weekday.numberValue == filterWeekday
                 }
                         }
-            print("📁 Категория '\(category.title)': \(category.trackers.count) трекеров -> \(filteredTrackers.count) после фильтрации")
                     return TrackerCategory(title: category.title, trackers: filteredTrackers)
                 }.filter { !$0.trackers.isEmpty }
                 
-                print("👀 Видимых категорий: \(visibleCategories.count)")
         collectionView.reloadData()
             updatePlaceholderVisibility()
         }
@@ -210,25 +205,49 @@ final class TrackersViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(_ trackerId: UUID) -> Bool {
+        let calendar = Calendar.current
         let selectedDate = datePicker.date
-        return completedTrackers.contains(TrackerRecord(trackerId: trackerId, date: selectedDate))
+        let normalizedSelectedDate = calendar.startOfDay(for: selectedDate)
+        return completedTrackers.contains(TrackerRecord(trackerId: trackerId, date: normalizedSelectedDate))
     }
     
     private func completeTracker(_ trackerId: UUID) {
+        let calendar = Calendar.current
         let selectedDate = datePicker.date
         let today = Date()
         
-        guard selectedDate <= today else { return }
+        let normalizedSelectedDate = calendar.startOfDay(for: selectedDate)
+        let normalizedToday = calendar.startOfDay(for: today)
         
-        let record = TrackerRecord(trackerId: trackerId, date: selectedDate)
+        guard normalizedSelectedDate <= normalizedToday else { return }
+        
+        let record = TrackerRecord(trackerId: trackerId, date: normalizedSelectedDate)
         completedTrackers.insert(record)
-        updateCompleteButtonsState()
+        
+        if let indexPath = findIndexPathForTracker(with: trackerId) {
+            collectionView.reloadItems(at: [indexPath])
+        }
     }
     
     private func uncompleteTracker(_ trackerId: UUID) {
-        let selectedDate = datePicker.date
-        completedTrackers.remove(TrackerRecord(trackerId: trackerId, date: selectedDate))
-        updateCompleteButtonsState()
+        let calendar = Calendar.current
+            let selectedDate = datePicker.date
+            let normalizedSelectedDate = calendar.startOfDay(for: selectedDate)
+        completedTrackers.remove(TrackerRecord(trackerId: trackerId, date: normalizedSelectedDate))
+        if let indexPath = findIndexPathForTracker(with: trackerId) {
+                collectionView.reloadItems(at: [indexPath])
+            }
+    }
+    
+    private func findIndexPathForTracker(with id: UUID) -> IndexPath? {
+        for (sectionIndex, category) in visibleCategories.enumerated() {
+            for (itemIndex, tracker) in category.trackers.enumerated() {
+                if tracker.id == id {
+                    return IndexPath(item: itemIndex, section: sectionIndex)
+                }
+            }
+        }
+        return nil
     }
     
     // MARK: - Mock Data
@@ -301,7 +320,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.onCompleteButtonTapped = { [weak self] in
             guard let self = self else { return }
-            if isCompletedToday {
+            let isCurrentlyCompleted = self.isTrackerCompletedToday(tracker.id)
+            if isCurrentlyCompleted {
                 self.uncompleteTracker(tracker.id)
             } else {
                 self.completeTracker(tracker.id)

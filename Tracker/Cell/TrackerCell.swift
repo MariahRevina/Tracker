@@ -45,7 +45,7 @@ final class TrackerCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.addAction(UIAction { [weak self] _ in
-            print("🎯 КНОПКА НАЖАТА в ячейке!")
+
             self?.onCompleteButtonTapped?()
         }, for: .touchUpInside)
         
