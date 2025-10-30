@@ -16,6 +16,9 @@ final class SheduleScreen: UIViewController {
         tableView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         tableView.isScrollEnabled = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
         return tableView
     }()
     
@@ -106,11 +109,15 @@ extension SheduleScreen: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weekdayCell", for: indexPath)
         let weekday = Weekday.allCases[indexPath.row]
         cell.textLabel?.text = weekday.name
-        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.textAlignment = .left
         cell.backgroundColor = .clear
+        
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         let switchView = UISwitch()
         switchView.isOn = selectedDays.contains(weekday)
+        
+        switchView.onTintColor = .yBlue
         
         switchView.addAction(UIAction { [weak self] _ in
             if switchView.isOn {

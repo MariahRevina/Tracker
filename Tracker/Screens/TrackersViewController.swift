@@ -38,8 +38,6 @@ final class TrackersViewController: UIViewController {
         searchBar.clipsToBounds = true
         searchBar.delegate = self
         
-        let searchTextField = searchBar.searchTextField
-        
         return searchBar
     }()
     

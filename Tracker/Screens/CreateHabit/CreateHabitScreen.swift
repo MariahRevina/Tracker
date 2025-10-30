@@ -21,7 +21,7 @@ final class CreateHabitScreen: UIViewController {
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "  Введите название трекера"
+        textField.placeholder = "Введите название трекера"
         textField.layer.cornerRadius = 16
         textField.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +156,7 @@ final class CreateHabitScreen: UIViewController {
             errorLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
             errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            optionsTableView.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 32),
+            optionsTableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             optionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             optionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             optionsTableView.heightAnchor.constraint(equalToConstant: 150),
@@ -289,7 +289,7 @@ extension CreateHabitScreen: UITableViewDataSource {
         
         cell.textLabel?.text = options[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = .yBlackDay
         
         if indexPath.row == 0, let category = selectedCategory {
             cell.detailTextLabel?.text = category
