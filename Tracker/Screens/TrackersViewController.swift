@@ -39,7 +39,6 @@ final class TrackersViewController: UIViewController {
         searchBar.delegate = self
         
         let searchTextField = searchBar.searchTextField
-        searchTextField.backgroundColor = UIColor(red: 0.46, green: 0.46, blue: 0.50, alpha: 0.12)
         
         return searchBar
     }()
@@ -142,8 +141,8 @@ final class TrackersViewController: UIViewController {
             trackersLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             trackersLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchBar.leadingAnchor.constraint(equalTo: trackersLabel.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             searchBar.topAnchor.constraint(equalTo: trackersLabel.bottomAnchor, constant: 7),
             searchBar.heightAnchor.constraint(equalToConstant: 36),
             
@@ -223,6 +222,9 @@ final class TrackersViewController: UIViewController {
         
         let record = TrackerRecord(trackerId: trackerId, date: normalizedSelectedDate)
         completedTrackers.insert(record)
+        
+        print("✅ Completed trackers count: \(completedTrackers.count)")
+        print("✅ For tracker \(trackerId): \(completedTrackers.filter { $0.trackerId == trackerId }.count) records")
         
         if let indexPath = findIndexPathForTracker(with: trackerId) {
             collectionView.reloadItems(at: [indexPath])
@@ -310,6 +312,9 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.item]
         let completedDays = completedTrackers.filter { $0.trackerId == tracker.id }.count
+        
+        print("🔄 Configuring cell - completedDays: \(completedDays) for tracker: \(tracker.id)")
+        
         let isCompletedToday = isTrackerCompletedToday(tracker.id)
         
         cell.configure(
