@@ -123,12 +123,14 @@ final class TrackerCell: UICollectionViewCell {
     func updateCompleteButton(isCompletedToday: Bool, color: UIColor) {
         if isCompletedToday {
             completeButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
-            completeButton.tintColor = .white
-            completeButton.backgroundColor = color
-        } else {
-            completeButton.setImage(UIImage(systemName: "plus"), for: .normal)
             completeButton.tintColor = color
             completeButton.backgroundColor = color.withAlphaComponent(0.3)
+        } else {
+            completeButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            
+            
+            completeButton.tintColor = .white
+            completeButton.backgroundColor = color
         }
     }
     
