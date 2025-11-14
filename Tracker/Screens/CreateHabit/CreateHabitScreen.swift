@@ -243,7 +243,7 @@ final class CreateHabitScreen: UIViewController {
             id: UUID(),
             name: name,
             color: color,
-            shedule: selectedSchedule,
+            schedule: selectedSchedule,
             emoji: emoji
         )
         delegate?.didCreateTracker(newTracker, categoryTitle: category)
@@ -328,7 +328,9 @@ extension CreateHabitScreen: UITableViewDelegate {
         if schedule.count == Weekday.allCases.count {
             return "Каждый день"
         } else {
-            let sortedSchedule = schedule.sorted { $0.rawValue < $1.rawValue }
+            let sortedSchedule = schedule.sorted {
+                $0.bitValue < $1.bitValue
+            }
             return sortedSchedule.map { $0.shortName }.joined(separator: ", ")
         }
     }
