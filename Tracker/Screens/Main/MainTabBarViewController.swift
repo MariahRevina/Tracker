@@ -39,7 +39,6 @@ final class MainTabBarViewController: UITabBarController {
     }
     
     private func setupViewControllers() {
-        // Создаем TrackersViewController и передаем store'ы
         let trackersVC = TrackersViewController()
         trackersVC.trackerStore = trackerStore
         trackersVC.trackerRecordStore = trackerRecordStore

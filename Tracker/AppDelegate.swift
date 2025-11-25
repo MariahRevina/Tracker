@@ -23,14 +23,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         
-        let tabBarController = MainTabBarViewController(
-            trackerStore: trackerStore,
-            trackerRecordStore: trackerRecordStore
-        )
+        let onboardingShown = UserDefaults.standard.bool(forKey: "onboardingShown")
         
-        window?.rootViewController = tabBarController
+        if onboardingShown {
+            showMainScreen()
+        } else {
+            showOnboarding()
+        }
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func showMainScreen() {
+        let tabBarVC = MainTabBarViewController(
+            trackerStore: trackerStore,
+            trackerRecordStore: trackerRecordStore
+        )
+        window?.rootViewController = tabBarVC
+    }
+    
+    func showOnboarding() {
+        let pageVC = OnboardingPageVC(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal
+        )
+        window?.rootViewController = pageVC
     }
 }
