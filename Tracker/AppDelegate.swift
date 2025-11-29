@@ -23,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         
-        let onboardingShown = UserDefaults.standard.bool(forKey: "onboardingShown")
-        
-        if onboardingShown {
+        if UsDefSettings.shared.onboardingShown {
             showMainScreen()
         } else {
             showOnboarding()
@@ -48,6 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             transitionStyle: .scroll,
             navigationOrientation: .horizontal
         )
+        
+        pageVC.onFinishOnboarding = { [weak self] in
+            UsDefSettings.shared.onboardingShown = true
+            self?.showMainScreen()
+        }
+        
         window?.rootViewController = pageVC
     }
 }

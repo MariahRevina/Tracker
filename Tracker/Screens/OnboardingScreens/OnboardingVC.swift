@@ -1,11 +1,14 @@
 import UIKit
 
-class OnboardingVC: UIViewController {
+final class OnboardingVC: UIViewController {
+    
+    // MARK: - Properties
+    private let pageModel: OnboardingPage
     
     // MARK: - UI Elements
     
     private lazy var backImageView: UIImageView = {
-        let imageView = UIImageView(image: onboardingImage)
+        let imageView = UIImageView(image: pageModel.image)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
@@ -17,7 +20,7 @@ class OnboardingVC: UIViewController {
         label.textColor = .yBlackDay
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        label.text = onboardingText
+        label.text = pageModel.text
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,14 +36,13 @@ class OnboardingVC: UIViewController {
         button.addTarget(self, action: #selector(technologyButtonTapped), for: .touchUpInside)
         return button
     }()
-    // MARK: - Properties
-    private let onboardingImage: UIImage
-    private let onboardingText: String
+    
+    // MARK: - Callback
+    var onTechnologyButtonTapped: (() -> Void)?
     
     // MARK: - Initialization
-    init(onboardingImage: UIImage, onboardingText: String) {
-        self.onboardingImage = onboardingImage
-        self.onboardingText = onboardingText
+    init(pageModel: OnboardingPage) {
+        self.pageModel = pageModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -78,7 +80,6 @@ class OnboardingVC: UIViewController {
     
     // MARK: - Actions
     @objc private func technologyButtonTapped() {
-        UserDefaults.standard.set(true, forKey: "onboardingShown")
-        (UIApplication.shared.delegate as? AppDelegate)?.showMainScreen()
+        onTechnologyButtonTapped?()
     }
 }

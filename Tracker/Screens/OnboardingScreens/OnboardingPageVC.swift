@@ -6,12 +6,25 @@ struct OnboardingPage {
     let text: String
 }
 
+extension OnboardingPage {
+    static let aboutTracking = OnboardingPage(
+        image: UIImage(resource: .firstOnboardingScreen),
+        text: "Отслеживайте только то, что хотите"
+    )
+    
+    static let aboutWaterAndYoga = OnboardingPage(
+        image: UIImage(resource: .secondImageSсreen),
+        text: "Даже если это\nне литры воды и йога"
+    )
+}
+
 // MARK: - Page View Controller
 final class OnboardingPageVC: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     // MARK: - Properties
     private var pages = [UIViewController]()
     private var initialPage = 0
+    var onFinishOnboarding: (() -> Void)?
     
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -38,14 +51,15 @@ final class OnboardingPageVC: UIPageViewController, UIPageViewControllerDataSour
     
     // MARK: - Setup Methods
     private func setupPages() {
-        let page1 = OnboardingVC(
-            onboardingImage: UIImage(resource: .firstOnboardingScreen),
-            onboardingText: String("Отслеживайте только то, что хотите"))
+        let page1 = OnboardingVC(pageModel: .aboutTracking)
         
-        let page2 = OnboardingVC(
-            onboardingImage: UIImage(resource: .secondImageSсreen) ,
-            onboardingText: String("Даже если это\nне литры воды и йога")
-        )
+        let page2 = OnboardingVC(pageModel: .aboutWaterAndYoga)
+        
+        [page1, page2].forEach { vc in
+            vc.onTechnologyButtonTapped = { [weak self] in
+                self?.onFinishOnboarding?()
+            }
+        }
         
         pages = [page1, page2]
     }

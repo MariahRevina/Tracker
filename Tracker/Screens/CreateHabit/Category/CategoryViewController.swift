@@ -11,7 +11,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - UI Elements
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(CategoryCell.self, forCellReuseIdentifier: "CategoryCell")
+        tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         tableView.layer.cornerRadius = 16
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,7 @@ final class CategoryViewController: UIViewController {
     
     private lazy var placeholderImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "star")
+        imageView.image = UIImage(resource: .star)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -90,10 +90,6 @@ final class CategoryViewController: UIViewController {
             name: NSNotification.Name("CategoryCellLongPress"),
             object: nil
         )
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Setup
@@ -254,7 +250,7 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else {
             return UITableViewCell()
         }
         

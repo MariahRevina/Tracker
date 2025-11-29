@@ -65,8 +65,7 @@ final class TrackerCategoryStore {
                     return nil
                 }
                 
-                let colorMarshalling = UIColorMarshalling()
-                let color = colorMarshalling.color(from: colorHex)
+                let color = UIColorMarshalling.color(from: colorHex)
                 
                 var schedule: [Weekday] = []
                 if let scheduleData = coreDataTracker.schedule,

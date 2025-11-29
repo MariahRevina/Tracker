@@ -46,7 +46,7 @@ final class AddEditCategoryViewController: UIViewController {
         }, for: .touchUpInside)
         
         return button
-      
+        
     }()
     
     // MARK: - Initialization
@@ -109,12 +109,12 @@ final class AddEditCategoryViewController: UIViewController {
     }
     
     private func updateDoneButtonState() {
-            let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            let isEmpty = text.isEmpty
-            
-            doneButton.isEnabled = !isEmpty
-            doneButton.backgroundColor = isEmpty ? .yGray : .yBlackDay
-        }
+        let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let isEmpty = text.isEmpty
+        
+        doneButton.isEnabled = !isEmpty
+        doneButton.backgroundColor = isEmpty ? .yGray : .yBlackDay
+    }
     
     // MARK: - Actions
     @objc private func doneButtonTapped() {

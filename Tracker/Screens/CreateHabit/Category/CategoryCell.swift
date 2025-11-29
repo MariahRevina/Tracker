@@ -2,7 +2,10 @@ import UIKit
 
 final class CategoryCell: UITableViewCell {
     
-    // MARK: - UI Elements
+    // MARK: - Public Properties
+    static let identifier = "CategoryCell"
+    
+    // MARK: Private Properties
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17)
@@ -38,7 +41,14 @@ final class CategoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
+    // MARK: - Public Methods
+    func configure(with title: String, isSelected: Bool, isLastCell: Bool = false) {
+        titleLabel.text = title
+        checkmarkImageView.isHidden = !isSelected
+        separatorView.isHidden = isLastCell
+    }
+    
+    // MARK: - Private Methods
     private func setupUI() {
         backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         
@@ -68,27 +78,17 @@ final class CategoryCell: UITableViewCell {
         addGestureRecognizer(longPressGesture)
     }
     
-    // MARK: - Configuration
-    func configure(with title: String, isSelected: Bool, isLastCell: Bool = false) {
-        titleLabel.text = title
-        checkmarkImageView.isHidden = !isSelected
-        separatorView.isHidden = isLastCell
-    }
-    
-    // MARK: - Actions
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-        
-        // Вибрация для обратной связи
+
         let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
         impactFeedbackGenerator.impactOccurred()
-        
-        // Вызываем замыкание через делегат или нотификацию
-        // В реальной реализации это будет передано во ViewModel
+  
         NotificationCenter.default.post(
             name: NSNotification.Name("CategoryCellLongPress"),
             object: nil,
             userInfo: ["categoryTitle": titleLabel.text ?? ""]
         )
     }
+    
 }
