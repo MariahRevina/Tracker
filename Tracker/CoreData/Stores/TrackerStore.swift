@@ -51,7 +51,7 @@ final class TrackerStore: NSObject {
         let trackerCoreData = TrackerCoreData(context: context)
         trackerCoreData.id = tracker.id
         trackerCoreData.name = tracker.name
-        trackerCoreData.color = colorMarshalling.hexString(from: tracker.color)
+        trackerCoreData.color = UIColorMarshalling.hexString(from: tracker.color)
         trackerCoreData.emoji = tracker.emoji
         
         let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: tracker.schedule.map { $0.rawValue }, requiringSecureCoding: false)
@@ -85,7 +85,7 @@ final class TrackerStore: NSObject {
                 schedule = scheduleArray.compactMap { Weekday(rawValue: $0) }
             }
             
-            let color = colorMarshalling.color(from: colorHex)
+            let color = UIColorMarshalling.color(from: colorHex)
             
             let tracker = Tracker(
                 id: id,
