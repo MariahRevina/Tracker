@@ -12,3 +12,10 @@
 
 /* Days count */
 "days_count" = "%d дней";
+
+/* Action Sheet */
+"edit_action" = "Редактировать";
+"delete_action" = "Удалить";
+"cancel_button" = "Отменить";
+"delete_confirmation_title" = "Уверены что хотите удалить трекер?";
+"placeholder_text" = "Что будем отслеживать?";

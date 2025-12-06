@@ -12,3 +12,10 @@
 
 /* Days count */
 "days_count" = "%d days";
+
+/* Action Sheet */
+"edit_action" = "Edit";
+"delete_action" = "Delete";
+"cancel_button" = "Отменить";
+"delete_confirmation_title" = "Are you sure you want to delete the tracker?";
+"placeholder_text" = "What will we track?";
